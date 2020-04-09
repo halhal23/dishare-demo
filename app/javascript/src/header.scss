@@ -1,0 +1,63 @@
+header {
+  position: fixed;
+  z-index: 100;
+  display: flex;
+  width: 100%;
+}
+
+.header-logo {
+  width: 120px;
+  height: 70px;
+  background: #333;
+  text-align: center;
+}
+.header-logo > a {
+  width: 100%;
+  height: 100%;
+  line-height: 70px;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.header-list {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+.header-list > li {
+  margin-left: 50px;
+  text-align: center;
+}
+
+.header-list > li:nth-child(4) {
+  margin: 0 50px 0 auto;
+}
+.header-list > li:nth-child(5) {
+  margin-right: 100px;
+}
+
+.header-list > li > a {
+  padding: 10px 20px;
+  position: relative;
+  overflow: hidden;
+  transition: .5s;
+}
+.header-list > li > a:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: -101%;
+  width: 100%;
+  height: 100%;
+  background: yellow;
+  transition: .5s;
+  z-index: -1;
+}
+.header-list > li > a:hover:before {
+  left: 0;
+}
+.header-list > li > a:hover {
+  color: #151515;
+}

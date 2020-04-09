@@ -1,23 +1,16 @@
 <!DOCTYPE html>
 <html>
   <head>
-<<<<<<< HEAD
-    <title>Webapp</title>
-=======
     <title>DiShare</title>
->>>>>>> static_pages_disign
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application' %>
+    <%= javascript_pack_tag 'application' %>
   </head>
 
   <body>
-<<<<<<< HEAD
-=======
     <%= render 'shared/header' %>
->>>>>>> static_pages_disign
     <%= yield %>
   </body>
 </html>
