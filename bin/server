@@ -1,0 +1,6 @@
+#!/bin/bash -i
+bundle install
+bundle exec rake db:migrate
+cp -rf /tmp/public/* /webapp/public/
+mkdir -p tmp/sockets
+bundle exec foreman start -f Procfile.dev

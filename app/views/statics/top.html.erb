@@ -1,5 +1,38 @@
-<div class="top-main-wrapper">
-  
+<div class="top-main-wrapper">ssss
 </div>
+
+<div id="app-test">
+  <input type="text" v-model="test">
+ 
+  <button @click="getData" data-toggle="modal"  class="btn btn-outline-primary">1</button>
+  <ul>
+    <li v-for="user in users" :key="user.name">
+      <p  data-toggle="modal" data-target="#testModal" @click="showModal(user)">
+        {{ user.name }}
+      </p>
+    </li>
+  </ul>
+  <input type="text" v-model="value">
+  <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{value}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ address }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="form-test"></div>
 <div id="counter"></div>
 <%= javascript_pack_tag "counter" %>
