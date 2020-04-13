@@ -3,12 +3,12 @@ header {
   z-index: 100;
   display: flex;
   width: 100%;
+  align-items: center;
 }
 
 .header-logo {
   width: 120px;
   height: 70px;
-  background: #333;
   text-align: center;
 }
 .header-logo > a {
@@ -24,6 +24,7 @@ header {
   display: flex;
   width: 100%;
   align-items: center;
+  transition: 0s;
 }
 
 .header-list > li {
@@ -37,7 +38,6 @@ header {
 .header-list > li:nth-child(5) {
   margin-right: 100px;
 }
-
 .header-list > li > a {
   padding: 10px 20px;
   position: relative;
@@ -60,4 +60,60 @@ header {
 }
 .header-list > li > a:hover {
   color: #151515;
+}
+
+.header-list-icon {
+  display: none;
+  color: white;
+  margin-right: 50px;
+  font-size: 40px;
+  cursor: pointer;
+}
+
+header > label.checkbtn {
+  margin-bottom: 0;
+}
+
+header > #check {
+  display: none;
+}
+
+
+@media ( max-width: 950px) {
+  header {
+    justify-content: space-between;
+  }
+
+  .header-list-icon {
+    display: block;
+  }
+  ul.header-list {
+    position: absolute;
+    display: block;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    transition: .5s;
+  }
+  ul.header-list > li {
+    width: 100%;
+    border-bottom: 1px solid #000;
+    margin: 0;
+    background: yellow;
+    transition: .4s;
+  }
+  ul.header-list > li > a {
+    padding: 25px 20px;
+    color: black;
+  }
+
+  #check:checked ~ ul.header-list {
+    display: block;
+    left: 0;
+  }
+
+  ul.header-list > li:hover {
+    background: rgb(238, 229, 152);
+  }
+
 }

@@ -1,0 +1,84 @@
+// topページ内のレストラン情報のスタイル
+.top-rests-wrapper {
+  background: #fff;
+  padding: 20px 70px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.top-rests-wrapper .card {
+  flex-shrink: 0;
+  box-shadow: 0 0 16px black;
+  width: 400px;
+  height: 200px;
+  font-size: 12px;
+  margin-left: 20px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: row;
+}
+
+.top-rests-wrapper .card .imgBx {
+  width: 40%;
+  height: 100%;
+  // background: #aaa;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.top-rests-wrapper .card .imgBx img {
+  width: 180px;
+  height: 160px;
+  transform: translateX(-40px);
+  border-radius: 10px;
+  box-shadow: 0 0 10px gray;
+}
+.top-rests-wrapper .card .infoBx {
+  height: 100%;
+  width: 60%;
+  padding: 20px 0;
+  overflow-Y: scroll;
+}
+.top-rests-wrapper .card .infoBx .name{
+  font-weight: bold;
+}
+.top-rests-wrapper .card .infoBx .opentime{
+  font-size: 8px;
+  padding: 0;
+  margin: 0;
+}
+.top-rests-wrapper .card .infoBx button.show{
+  font-size: 13spx;
+  margin-top: 30px;
+  background: transparent;
+  border: 1px solid black;
+  padding: 4px 10px;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+}
+.top-rests-wrapper .card .infoBx button.show:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  left: -101%;
+  width: 100%;
+  height: 100%;
+  background: yellow;
+  z-index: -1;
+  transition: .4s;
+}
+.top-rests-wrapper .card .infoBx button.show:hover:before {
+  left: 0;
+}
+
+.nav-item > a {
+  color: black;
+}
+.modal-dialog {
+  width: 800px;
+  max-width: 800px;
+}

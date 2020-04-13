@@ -1,5 +1,77 @@
-<div class="top-main-wrapper">
-  
+<div id="top-container">
+  <div class="top-main-wrapper">
+    <div class="top-search-wrapper">
+      <h2>Welocome to the Dishare.</h2>
+      <p>Let's share <span>"delicious".</span></p>
+      <form>
+        <input type="text" v-model="keyword" @click="inputKeyword" placeholder="ex: お肉 salad">
+        <a href="#top-rests-wrapper" class="searchBtn" @click="searchRest">
+          <i class="fas fa-search"></i>
+        </a>
+        <div :class="{details: true, hidden: isHidden}">
+          <a href="#top-rests-wrapper" class="btn btn-success" @click="searchRest">Find a nearby store</a>
+          <a href="#top-rests-wrapper" class="btn btn-primary" @click="searchRest">Find popular store</a>
+        </div>
+      </form>
+      <p>Enter a keyword and search for a restaurant.</p>
+    </div>
+  </div>
+
+  <div class="top-rests-wrapper" id="top-rests-wrapper">
+    <div class="card"  v-for="rest in rests" :key="rest.name">
+      <div class="imgBx">
+        <img :src="rest.image_url.shop_image1" alt="" v-if="rest.image_url.shop_image1">
+        <img :src="rest.image_url.shop_image2" alt="" v-else-if="rest.image_url.shop_image2">
+        <p v-else>画像ないです</p>
+      </div>
+      <div class="infoBx">
+        <span class="badge badge-success">
+          {{ rest.access.station }}から徒歩{{ rest.access.walk }}分
+        </span>
+        <p class="name">{{ rest.name }}</p>
+        <p class="opentime">平均予算  {{ rest.budget }}円</p>
+        <p class="opentime" v-if="rest.lunch">ランチ予算  {{ rest.lunch }}円</p>
+        <button @click="showRestInfo(rest)" data-toggle="modal" data-target="#showRestModal" class="show">詳細を見る</button>
+      </div>  
+    </div>
+  </div>
+  <%= render 'show_rest_modal' %>
 </div>
-<div id="counter"></div>
-<%= javascript_pack_tag "counter" %>
+<%= javascript_pack_tag "search" %>
+  
+  <div id="app-test">
+    <input type="text" v-model="test">
+    
+    <button @click="getData" data-toggle="modal"  class="btn btn-outline-primary">1</button>
+    <ul>
+      <li v-for="user in users" :key="user.name">
+        <p  data-toggle="modal" data-target="#testModal" @click="showModal(user)">
+          {{ user.name }}
+        </p>
+      </li>
+    </ul>
+    <input type="text" v-model="value">
+    <div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">{{value}}</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            {{ address }}
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="form-test"></div>
+  <div id="counter"></div>
+  <%= javascript_pack_tag "counter" %>
+  

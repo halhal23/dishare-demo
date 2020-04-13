@@ -5,14 +5,20 @@ services:
       context: .
     env_file:
       - ./environments/db.env
-    command: sh scripts/launch.sh
+    # command: sh scripts/launch.sh
+    command: ./bin/server
     volumes:
       - .:/webapp
       - public-data:/webapp/public
       - tmp-data:/webapp/tmp
       - log-data:/webapp/log
+    ports:
+      - "3000:3000"
+      - "8080:8080"
     depends_on:
       - db
+    tty: true
+    stdin_open: true
   db:
     image: mysql:5.7
     env_file:

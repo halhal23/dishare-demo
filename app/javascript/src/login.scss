@@ -1,0 +1,140 @@
+.modal-dialog.login {
+  max-width: 90%;
+  width: 90%;
+  margin: 0 auto;
+}
+
+.login-wrapper {
+  position: relative;
+  background: rgb(31, 35, 128);
+  width: 100%;
+  height: 600px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+// .login-wrapper:before {
+//   position: absolute;
+//   content: '';
+//   right: 0;
+//   top: 0;
+//   width: 100px;
+//   height: 100%;
+//   background: tomato;
+// }
+
+.login-wrapper .formBx {
+  width: 50%;
+  // background: #bbb;
+}
+.login-wrapper .formBx form {
+  padding-left: 65px;
+}
+
+.login-wrapper .formBx form h2 {
+  margin-bottom: 38px;
+  font-size: 50px;
+  color: white;
+  letter-spacing: 3px;
+}
+.login-wrapper .formBx form .inputBx {
+  margin-bottom: 50px;
+  position: relative;
+}
+.login-wrapper .formBx form .inputBx:last-child {
+  margin-bottom: 0;
+}
+
+.login-wrapper .formBx form .inputBx input, 
+.login-wrapper .formBx form .inputBx textarea {
+  position: relative;
+  background: transparent;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid #fff;
+  color: #fff;
+  font-size: 24px;
+  font-weight: bold;
+  width: 100%;
+  letter-spacing: 2px;
+  z-index: 1;
+}
+
+.login-wrapper .formBx form .inputBx span {
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  color: rgba(255,255,255, .5);
+  font-size: 24px;
+  transition: .5s;
+}
+
+.login-wrapper .formBx form .inputBx input:focus ~ span,
+.login-wrapper .formBx form .inputBx textarea:focus ~ span {
+  top: -24px;
+  font-size: 18px;
+  color: rgb(206, 255, 71);
+}
+
+.login-wrapper .formBx form .inputBx input:focus {
+  border-bottom: 1px solid rgb(206, 255, 71);
+}
+
+.login-wrapper .formBx form .inputBx input.submit  {
+  border: 1px solid white;
+  font-size: 20px;
+  padding: 4px 4px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: .5s;
+}
+
+.login-wrapper .formBx form .inputBx input.submit:hover {
+  background: rgb(206, 255, 71);
+  color: black;
+}
+
+.login-wrapper .imgBx {
+  width: 50%;
+  height: 100%;
+  // background: #ccc;
+  position: relative;
+  overflow: hidden;
+}
+.login-wrapper .imgBx:before {
+  position: absolute;
+  content: '';
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(206, 255, 71);
+  transform-origin: bottom;
+  transform: skewX(-25deg) translateX(10%);
+  z-index: 2;
+}
+.login-wrapper .imgBx img {
+  position: absolute;
+  bottom: 0;
+  z-index: 10;
+}
+
+@media ( max-width: 780px ){
+  .login-wrapper .imgBx {
+    display: none;
+  }
+  .login-wrapper .formBx {
+    width: 100%;
+  }
+  .login-wrapper .formBx form{
+    padding: 0 40px 0 40px;
+  }
+
+  .login-wrapper h2
+  {
+    text-align: center;
+  }
+}
