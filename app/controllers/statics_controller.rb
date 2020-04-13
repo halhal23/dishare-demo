@@ -23,13 +23,13 @@ class StaticsController < ApplicationController
       require 'net/https'
       require 'active_support'
       require 'active_support/core_ext'
-      url << "&name=肉"
+      url << "&name=" << params[:keyword] << "&pref=PREF13"
       url=URI.encode(url)
       uri = URI.parse(url)
       json = Net::HTTP.get(uri)
       result = JSON.parse(json)
       rests = result['rest']
-      # rests = 'koko'
+      # rests = params[:keyword]
   
       render json: rests
       rescue

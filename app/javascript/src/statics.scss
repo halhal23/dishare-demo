@@ -5,6 +5,10 @@
   background-position: center;
   min-height: 100vh;
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
 }
 
 .top-main-wrapper:before {
@@ -18,8 +22,64 @@
   background: rgba(0,0,0,.6);
 }
 
-
-
 h1 {
   color: tomato;
 }
+
+.top-search-wrapper {
+  position: relative;
+  padding: 40px;
+  // border: 1px solid #fff;
+  z-index: 2;
+  color: white;
+  text-align: center;
+  font-family: 'Georgia';
+}
+
+.top-search-wrapper h2,
+.top-search-wrapper p {
+  font-size: 40px;
+  margin-bottom: 30px;
+}
+
+.top-search-wrapper form {
+  margin: 40px 0 20px 0;
+  position: relative;
+}
+.top-search-wrapper form input[type="text"] {
+  width: 537px;
+  color: white;
+  background: transparent;
+  border: 2px solid #ddd;
+  outline: none;
+  padding: 5px 10px;
+  border-radius: 25px;
+  font-size: 24px;
+  text-align: center;
+}
+
+.top-search-wrapper form a.searchBtn {
+  position: absolute;
+  background: #fff;
+  top: 2.5px;
+  right: 16%;
+  width: 45px;
+  height: 45px;
+  border-radius: 23px;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+}
+.top-search-wrapper form .details {
+  margin: 30px 0;
+  transition: .5s;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
