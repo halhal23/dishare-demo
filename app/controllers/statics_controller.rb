@@ -1,5 +1,6 @@
 class StaticsController < ApplicationController
   def top
+    gon.google_map_api_key = ENV['GOOGLE_MAP_API_KEY']
   end
 
   def error
@@ -15,7 +16,7 @@ class StaticsController < ApplicationController
 
   def axios
     begin
-      api_key = "cccd05138db6e13ac16bf8e63a21cd2d"
+      api_key = ENV['GNAVI_API_KEY']
       url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='
       url << api_key  
       require 'open-uri'

@@ -53,24 +53,21 @@
 .top-rests-wrapper .card .infoBx button.show{
   font-size: 13spx;
   margin-top: 30px;
-  background: transparent;
-  border: 1px solid black;
-  padding: 4px 10px;
+  background: linear-gradient(90deg, rgb(255, 255, 126), rgb(141, 255, 126));
+  // background: #888;
+  border: none;
+  padding: 7px 15px;
+  color: navy;
+  border-radius: 20px;
   cursor: pointer;
-  position: relative;
-  z-index: 2;
-}
-.top-rests-wrapper .card .infoBx button.show:before {
-  position: absolute;
-  content: '';
-  top: 0;
-  left: -101%;
-  width: 100%;
-  height: 100%;
-  background: yellow;
-  z-index: -1;
   transition: .4s;
 }
+
+.top-rests-wrapper .card .infoBx button.show:hover {
+  background: linear-gradient(90deg, rgb(141, 255, 126), rgb(255, 255, 126));
+  // background: #ddd;
+}
+
 .top-rests-wrapper .card .infoBx button.show:hover:before {
   left: 0;
 }
