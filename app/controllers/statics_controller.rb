@@ -23,7 +23,15 @@ class StaticsController < ApplicationController
       require 'net/https'
       require 'active_support'
       require 'active_support/core_ext'
-      url << "&name=" << params[:keyword] << "&pref=PREF13"
+      # url << "&name=" << params[:keyword] << "&pref=PREF13"
+      if params[:latitude].present?
+        url << "&name=" << params[:keyword] 
+        url << "&latitude=" << params[:latitude] 
+        url << "&longitude=" << params[:longitude] 
+        url << "&range=" << params[:range] 
+      else
+        url << "&name=" << params[:keyword] << "&pref=PREF13"
+      end
       url=URI.encode(url)
       uri = URI.parse(url)
       json = Net::HTTP.get(uri)
