@@ -1,7 +1,7 @@
 <div id="top-container">
   <div class="top-main-wrapper">
     <div class="top-search-wrapper">
-      <h2>Welocome to the Dishare.</h2>
+      <h2>Welocome to the Dishare!!.</h2>
       <p>Let's share <span>"delicious".</span></p>
       <form>
         <input type="text" v-model="keyword" @click="inputKeyword" placeholder="ex: お肉 salad">
@@ -74,4 +74,8 @@
   <div id="form-test"></div>
   <div id="counter"></div>
   <%= javascript_pack_tag "counter" %>
-  
+<% if Rails.env == "development" %>
+  <h1>開発環境です</h1>
+<% elsif Rails.env == "production" %>
+  <h1>本番環境です</h1>
+<% end %>

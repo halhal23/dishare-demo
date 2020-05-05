@@ -5,8 +5,10 @@ services:
       context: .
     env_file:
       - ./environments/db.env
-    # command: sh scripts/launch.sh
-    command: ./bin/server
+    command: sh scripts/launch.sh
+    # command: ./bin/server
+    environment:
+      RAILS_ENV: production
     volumes:
       - .:/webapp
       - public-data:/webapp/public
