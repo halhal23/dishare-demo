@@ -20,17 +20,14 @@ ADD Gemfile.lock /webapp/Gemfile.lock
 
 RUN bundle install
 
-ADD . /webapp
-
-# フロント用のライブラリのインストールと静的ファイルの作成
-RUN bundle exec rails yarn:install
-RUN bundle exec rails webpacker:compile
-
 
 # 本番環境の場合プロダクション
+COPY package.json yarn.lock ./
+RUN bundle exec yarn
 RUN bundle exec rails assets:precompile
+RUN bundle exec bin/webpack
 
-
+ADD . /webapp
 
 RUN mkdir -p tmp/sockets
 CMD bundle exec puma -C config/puma.rb
