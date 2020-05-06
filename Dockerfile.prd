@@ -29,5 +29,8 @@ RUN bundle exec rails assets:precompile
 
 ADD . /webapp
 
+VOLUME /webapp/public /webapp/tmp /webapp/log
+
 RUN mkdir -p tmp/sockets
+
 CMD bundle exec puma -C config/puma.rb
