@@ -99,18 +99,18 @@ workflows:
       #       branches:
       #         only: master
 
-      - aws-ecs/run-task:
-          requires:
-            - aws-ecr/build-and-push-image
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY         
-          region: AWS_REGION
-          cluster: '${ECS_ARN}'
-          task-definition: 'neptune-task:${CIRCLE_SHA1}'
+      # - aws-ecs/run-task:
+      #     requires:
+      #       - aws-ecr/build-and-push-image
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY         
+          
+      #     cluster: '${ECS_ARN}'
+      #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
 
       - aws-ecs/deploy-service-update:
           requires:
-            - aws-ecs/run-task
+            - aws-ecr/build-and-push-image
           family: 'neptune-task' # ECSのタスク定義名
           cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
           service-name: 'hello-service-3' #サービス名
