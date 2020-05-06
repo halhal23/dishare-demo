@@ -1,117 +1,15 @@
 version: 2.1
 orbs:
-  aws-ecr: circleci/aws-ecr@6.7.0
-  aws-ecs: circleci/aws-ecs@1.1.0
-  aws-cli: circleci/aws-cli@0.1.16
-
-executors:
-  container:
-    docker:
-      - image: circleci/ruby:2.5.1-node-browsers
- 
+  ruby: circleci/ruby@0.1.2 
 
 jobs:
-  test:
+  build:
     docker:
-      - image: circleci/ruby:2.5.1-node-browsers
-        environment:
-          RAILS_ENV: test
-      - image: circleci/mysql:5.7
-        environment:
-          MYSQL_ROOT_PASSWORD: password
-          MYSQL_USER: root
-          MYSQL_DATABASE: webapp_test
-    working_directory: ~/webapp
+      - image: circleci/ruby:2.6.3-stretch-node
+    executor: ruby/default
     steps:
       - checkout
-      - restore_cache:
-          name: bundle installの結果をリストア
-          keys:
-            - v1-dependencies-{{ checksum "Gemfile.lock"}}
-            - v1-dependencies-
       - run:
-          name: bundle install
-          command: bundle install --path vendor/bundle
-      - run:
-          name: context設定の環境変数
-          command: |
-            echo "${MYSQL_PASSWORD}"
-            echo "${MYSQL_USER}"
-            echo "${MYSQL_HOST}"
-      - save_cache:
-          name: bundle installの結果をキャッシュ
-          paths: ./vendor/bundle
-          key: v1-dependencies-{{ checksum "Gemfile.lock" }}
-      - run:
-          name: データベースの起動を待機
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-      - run:
-          name: データベースのセットアップ
-          command: bundle exec rails db:schema:load
-      - run:
-          name: RSpecのテストを実行
-          command: bundle exec rspec
-  #マイグレーションを実行        
-  db-migrate-on-task-run:
-    executor: container
-    working_directory: ~/webapp
-    steps:
-      - checkout
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-      - run:
-          name: "db migrate"
-          command: |
-            aws ecs run-task --region $AWS_REGION \
-              --cluster $ECS_ARN \
-              --task-definition neptune-task \
-              --overrides file://scripts/run_task_db_migrate.json
-
-workflows:
-  version: 2
-  rails-test-and-deploy:
-    jobs:
-      - test
-      # ECRへイメージをPUSH
-      - aws-ecr/build-and-push-image:
-          requires:
-            - test
-          account-url: AWS_ECR_ACCOUNT_URL
-          region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: ./Dockerfile
-          repo: webapp-rails
-          tag: "${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
-      - db-migrate-on-task-run:
-          requires:
-            - aws-ecr/build-and-push-image
-          filters:
-            branches:
-              only: master
-      # マイグレーションを実行
-      # - aws-ecs/run-task:
-      #     requires:
-      #       - aws-ecr/build-and-push-image
-      #     aws-access-key-id: AWS_ACCESS_KEY_ID
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY         
-      #     region: AWS_REGION
-      #     cluster: '${ECS_ARN}'
-      #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
-      - aws-ecs/deploy-service-update:
-          requires:
-            - db-migrate-on-task-run
-          family: 'neptune-task' # ECSのタスク定義名
-          cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
-          service-name: 'hello-service-3' #サービス名
-          container-image-name-updates: "container=rails-v9,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
-
+          name: Which bundler?
+          command: bundle -v
+      - ruby/bundle-install
