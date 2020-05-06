@@ -6,6 +6,7 @@ services:
     env_file:
       - ./environments/db.env
     # command: sh scripts/launch.sh
+    # command: bundle exec puma -C config/puma.rb
     command: ./bin/server
     volumes:
       - .:/webapp
