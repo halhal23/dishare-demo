@@ -5,10 +5,9 @@ services:
       context: .
     env_file:
       - ./environments/db.env
-    command: sh scripts/launch.sh
-    # command: ./bin/server
-    environment:
-      RAILS_ENV: production
+    # command: sh scripts/launch.sh
+    # command: bundle exec puma -C config/puma.rb
+    command: ./bin/server
     volumes:
       - .:/webapp
       - public-data:/webapp/public
