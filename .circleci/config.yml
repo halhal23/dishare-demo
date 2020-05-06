@@ -20,7 +20,7 @@ jobs:
         environment:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_USER: root
-          MYSQL_DATABASE: webapp_test
+          MYSQL_DATABASE: myapp_test
     working_directory: ~/webapp
     steps:
       - checkout
@@ -52,22 +52,22 @@ jobs:
           name: RSpecのテストを実行
           command: bundle exec rspec
   #マイグレーションを実行        
-  db-migrate-on-task-run:
-    executor: container
-    working_directory: ~/webapp
-    steps:
-      - checkout
-      - aws-cli/setup:
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          aws-region: AWS_REGION
-      - run:
-          name: "db migrate"
-          command: |
-            aws ecs run-task --region $AWS_REGION \
-              --cluster $ECS_ARN \
-              --task-definition neptune-task \
-              --overrides file://scripts/run_task_db_migrate.json
+  # db-migrate-on-task-run:
+  #   executor: container
+  #   working_directory: ~/webapp
+  #   steps:
+  #     - checkout
+  #     - aws-cli/setup:
+  #         aws-access-key-id: AWS_ACCESS_KEY_ID
+  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+  #         aws-region: AWS_REGION
+  #     - run:
+  #         name: "db migrate"
+  #         command: |
+  #           aws ecs run-task --region $AWS_REGION \
+  #             --cluster $ECS_ARN \
+  #             --task-definition neptune-task \
+  #             --overrides file://scripts/run_task_db_migrate.json
 
 workflows:
   version: 2
@@ -75,26 +75,26 @@ workflows:
     jobs:
       - test
       # ECRへイメージをPUSH
-      - aws-ecr/build-and-push-image:
-          requires:
-            - test
-          account-url: AWS_ECR_ACCOUNT_URL
-          region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: ./Dockerfile
-          repo: webapp-rails
-          tag: "${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
-      - db-migrate-on-task-run:
-          requires:
-            - aws-ecr/build-and-push-image
-          filters:
-            branches:
-              only: master
+      # - aws-ecr/build-and-push-image:
+      #     requires:
+      #       - test
+      #     account-url: AWS_ECR_ACCOUNT_URL
+      #     region: AWS_REGION
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     create-repo: true
+      #     dockerfile: ./Dockerfile
+      #     repo: webapp-rails
+      #     tag: "${CIRCLE_SHA1}"
+      #     filters:
+      #       branches:
+      #         only: master
+      # - db-migrate-on-task-run:
+      #     requires:
+      #       - aws-ecr/build-and-push-image
+      #     filters:
+      #       branches:
+      #         only: master
       # マイグレーションを実行
       # - aws-ecs/run-task:
       #     requires:
@@ -104,14 +104,14 @@ workflows:
       #     region: AWS_REGION
       #     cluster: '${ECS_ARN}'
       #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
-      - aws-ecs/deploy-service-update:
-          requires:
-            - db-migrate-on-task-run
-          family: 'neptune-task' # ECSのタスク定義名
-          cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
-          service-name: 'hello-service-3' #サービス名
-          container-image-name-updates: "container=rails-v9,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+      # - aws-ecs/deploy-service-update:
+      #     requires:
+      #       - db-migrate-on-task-run
+      #     family: 'neptune-task' # ECSのタスク定義名
+      #     cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
+      #     service-name: 'hello-service-3' #サービス名
+      #     container-image-name-updates: "container=rails-v9,tag=${CIRCLE_SHA1}"
+      #     filters:
+      #       branches:
+      #         only: master
 
