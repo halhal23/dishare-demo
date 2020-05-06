@@ -25,6 +25,7 @@ RUN bundle install
 COPY package.json yarn.lock ./
 RUN bundle exec yarn
 RUN bundle exec rails assets:precompile
+RUN bundle exec yarn add webpack
 RUN bundle exec bin/webpack
 
 ADD . /webapp
