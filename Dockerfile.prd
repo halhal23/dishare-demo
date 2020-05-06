@@ -20,17 +20,18 @@ ADD Gemfile.lock /webapp/Gemfile.lock
 
 RUN bundle install
 
+ADD . /webapp
 
 # 本番環境の場合プロダクション
 COPY package.json yarn.lock ./
 RUN bundle exec yarn
 RUN bundle exec rails assets:precompile
+RUN bundle exec rails webpacker:install
+# RUN bundle exec ./bin/webpack
 
 
-ADD . /webapp
 
 VOLUME /webapp/public /webapp/tmp /webapp/log
 
 RUN mkdir -p tmp/sockets
-
 CMD bundle exec puma -C config/puma.rb
