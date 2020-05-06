@@ -6,9 +6,12 @@ orbs:
 
 executors:
   container:
+    working_directory: ~/webapp
     docker:
       - image: circleci/ruby:2.5.1-node-browsers
- 
+        environment:
+          TZ: Asia/Tokyo
+
 
 jobs:
   test:
@@ -51,23 +54,23 @@ jobs:
       - run:
           name: RSpecのテストを実行
           command: bundle exec rspec
+
   #マイグレーションを実行        
-  # db-migrate-on-task-run:
-  #   executor: container
-  #   working_directory: ~/webapp
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup:
-  #         aws-access-key-id: AWS_ACCESS_KEY_ID
-  #         aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-  #         aws-region: AWS_REGION
-  #     - run:
-  #         name: "db migrate"
-  #         command: |
-  #           aws ecs run-task --region $AWS_REGION \
-  #             --cluster $ECS_ARN \
-  #             --task-definition neptune-task \
-  #             --overrides file://scripts/run_task_db_migrate.json
+  db-migrate-on-task-run:
+    executor: container
+    steps:
+      - checkout
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+      - run:
+          name: "db migrate"
+          command: |
+            aws ecs run-task --region $AWS_REGION \
+              --cluster $ECS_ARN \
+              --task-definition neptune-task \
+              --overrides file://scripts/run_task_db_migrate.json
 
 workflows:
   version: 2
@@ -92,12 +95,12 @@ workflows:
               only: master
 
       # マイグレーションを実行
-      # - db-migrate-on-task-run:
-      #     requires:
-      #       - aws-ecr/build-and-push-image
-      #     filters:
-      #       branches:
-      #         only: master
+      - db-migrate-on-task-run:
+          requires:
+            - aws-ecr/build-and-push-image
+          filters:
+            branches:
+              only: master
 
       # - aws-ecs/run-task:
       #     requires:
@@ -110,7 +113,7 @@ workflows:
 
       - aws-ecs/deploy-service-update:
           requires:
-            - aws-ecr/build-and-push-image
+            - db-migrate-on-task-run
           family: 'neptune-task' # ECSのタスク定義名
           cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
           service-name: 'hello-service-3' #サービス名
