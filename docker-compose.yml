@@ -3,11 +3,14 @@ services:
   app:
     build:
       context: .
+      # dockerfile: Dockerfile.prd
     env_file:
       - ./environments/db.env
     # command: sh scripts/launch.sh
     # command: bundle exec puma -C config/puma.rb
     command: ./bin/server
+    # environment:
+    #   RAILS_ENV: production
     volumes:
       - .:/webapp
       - public-data:/webapp/public
