@@ -69,7 +69,7 @@ jobs:
           command: |
             aws ecs run-task --region $AWS_REGION \
               --cluster $ECS_ARN \
-              --task-definition neptune-task \
+              --task-definition neptune-task:$CIRCLE_SHA1 \
               --overrides file://scripts/run_task_db_migrate.json
 
 workflows:

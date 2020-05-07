@@ -2,6 +2,11 @@
   max-width: 90%;
   width: 90%;
   margin: 0 auto;
+  z-index: 10;
+}
+
+.modal-backdrop {
+  z-index: 10;
 }
 
 .login-wrapper {
@@ -87,7 +92,7 @@
   font-size: 20px;
   padding: 4px 4px;
   margin-left: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 5px;
   cursor: pointer;
   transition: .5s;
 }
