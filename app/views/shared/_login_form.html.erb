@@ -2,6 +2,7 @@
   <div class="modal-dialog modal-dialog-centered login" role="document">
     <div class="modal-content login-wrapper">
       <div class="formBx">
+
       <template v-if="isSignUp">
         <%= form_for @user do |f| %>
           <h2>{{ form_title }}</h2>
@@ -13,10 +14,13 @@
             <%= f.email_field :email %>
             <span>email</span>
           </div> 
-
           <div class="inputBx">
             <%= f.password_field :password %>
             <span>password</span>
+          </div>
+          <div class="inputBx">
+            <%= f.password_field :password_confirmation %>
+            <span>password (confirm)</span>
           </div>
           <div class="inputBx row" v-if="!isSignUp">
             <%= f.submit "Login", class: "submit col-4" %>
