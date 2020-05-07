@@ -1,7 +1,8 @@
 class StaticsController < ApplicationController
   def top
     gon.google_map_api_key = ENV['GOOGLE_MAP_API_KEY']
-    @user = User.new(name: 'doumo')
+    @user = User.new
+    @doumo = User.new(name: 'DOUMO')
   end
 
   def error

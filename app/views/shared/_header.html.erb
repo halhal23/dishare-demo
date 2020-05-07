@@ -1,4 +1,4 @@
-<header>
+<header id="sign_up_and_in">
   <div class="header-logo">
     <%= link_to "DiShare", root_path %>
   </div>
@@ -17,13 +17,15 @@
       <a href="#">Recipe</a>
     </li>
     <li>
-      <a href="#" data-toggle="modal" data-target="#exampleModal">SignUP</a>
+      <a href="#" data-toggle="modal" data-target="#loginModal" @click="onSignUpFormClick">SignUP</a>
     </li>
     <li>
-      <a href="#" data-toggle="modal" data-target="#loginModal">LogIN</a>
+      <a href="#" data-toggle="modal" data-target="#loginModal" @click="onLoginFormClick">LogIN</a>
     </li>
   </ul>
+
+  <!-- Modal -->
+  <%= render 'shared/login_form' %>
+  
 </header>
 
-<!-- Modal -->
-<%= render 'shared/login_form' %>
