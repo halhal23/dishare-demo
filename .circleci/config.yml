@@ -69,7 +69,7 @@ jobs:
           command: |
             aws ecs run-task --region $AWS_REGION \
               --cluster $ECS_ARN \
-              --task-definition neptune-task:$CIRCLE_SHA1 \
+              --task-definition neptune-task \
               --overrides file://scripts/run_task_db_migrate.json
 
 workflows:
@@ -93,7 +93,7 @@ workflows:
           filters:
             branches:
               only: master
-
+      
       # マイグレーションを実行
       - db-migrate-on-task-run:
           requires:
@@ -101,15 +101,6 @@ workflows:
           filters:
             branches:
               only: master
-
-      # - aws-ecs/run-task:
-      #     requires:
-      #       - aws-ecr/build-and-push-image
-      #     aws-access-key-id: AWS_ACCESS_KEY_ID
-      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY         
-          
-      #     cluster: '${ECS_ARN}'
-      #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
 
       - aws-ecs/deploy-service-update:
           requires:
@@ -121,4 +112,17 @@ workflows:
           filters:
             branches:
               only: master
+
+      
+
+      # - aws-ecs/run-task:
+      #     requires:
+      #       - aws-ecr/build-and-push-image
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY         
+          
+      #     cluster: '${ECS_ARN}'
+      #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
+
+
 

@@ -4,7 +4,7 @@
       <div class="formBx">
 
       <template v-if="isSignUp">
-        <%= form_for @user do |f| %>
+        <%= form_for User.new do |f| %>
           <h2>{{ form_title }}</h2>
           <div class="inputBx">
             <%= f.text_field :name %>
