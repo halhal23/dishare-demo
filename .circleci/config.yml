@@ -69,7 +69,7 @@ jobs:
           command: |
             aws ecs run-task --region $AWS_REGION \
               --cluster $ECS_ARN \
-              --task-definition neptune-task:$CIRCLE_SHA1 \
+              --task-definition neptune-task \
               --overrides file://scripts/run_task_db_migrate.json
 
 workflows:
@@ -94,10 +94,21 @@ workflows:
             branches:
               only: master
 
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: 'neptune-task' # ECSのタスク定義名
+          cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
+          service-name: 'hello-service-3' #サービス名
+          container-image-name-updates: "container=rails-v15,tag=${CIRCLE_SHA1}"
+          filters:
+            branches:
+              only: master
+
       # マイグレーションを実行
       - db-migrate-on-task-run:
           requires:
-            - aws-ecr/build-and-push-image
+            - aws-ecs/deploy-service-update
           filters:
             branches:
               only: master
@@ -111,14 +122,5 @@ workflows:
       #     cluster: '${ECS_ARN}'
       #     task-definition: 'neptune-task:${CIRCLE_SHA1}'
 
-      - aws-ecs/deploy-service-update:
-          requires:
-            - db-migrate-on-task-run
-          family: 'neptune-task' # ECSのタスク定義名
-          cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
-          service-name: 'hello-service-3' #サービス名
-          container-image-name-updates: "container=rails-v15,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+
 
