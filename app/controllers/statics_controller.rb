@@ -18,6 +18,7 @@ class StaticsController < ApplicationController
 
   def axios
     begin
+      # api_key = ''
       api_key = ENV['GNAVI_API_KEY']
       url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='
       url << api_key  

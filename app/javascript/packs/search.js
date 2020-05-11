@@ -14,6 +14,8 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
+console.log(gon.google_map_api_key);
+
 document.addEventListener('DOMContentLoaded', () => {
   new Vue({
     el: "#top-container",
