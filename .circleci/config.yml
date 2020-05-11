@@ -54,6 +54,22 @@ jobs:
       - run:
           name: RSpecのテストを実行
           command: bundle exec rspec ./spec/commons/
+  
+  #イメージのビルドとECRへのプッシュ
+  build-image-and-push:
+    executor: container
+    steps:
+      - aws-ecr/build-and-push-image:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          account-url: AWS_ECR_ACCOUNT_URL
+          region: AWS_REGION
+          repo: dishare-rails
+          dockerfile: ./Dockerfile.prd
+          create-repo: true
+          attach-workspace: true
+          setup-remote-docker: true
+          
 
   #マイグレーションを実行        
   db-migrate-on-task-run:
@@ -71,47 +87,51 @@ jobs:
               --cluster $ECS_ARN \
               --task-definition neptune-task \
               --overrides file://scripts/run_task_db_migrate.json
+   
+  #デプロイ
+  service-update:
+    executor: container
+    steps:
+      - checkout
+      - aws-cli/install
+      - aws-cli/setup:
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          aws-region: AWS_REGION
+      - aws-ecs/update-service:
+          family: 'neptune-task'
+          cluster-name: '${ECS_ARN}'
+          service-name: 'hello-service-3'
+          container-image-name-updates: "container=rails-v15,tag=latest"
 
 workflows:
-  version: 2
+  version: 2.1
   rails-test-and-deploy:
     jobs:
       - test
 
-      # ECRへイメージをPUSH
-      - aws-ecr/build-and-push-image:
+      #イメージのビルドとプッシュ
+      - build-image-and-push:
           requires:
             - test
-          account-url: AWS_ECR_ACCOUNT_URL
-          region: AWS_REGION
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          create-repo: true
-          dockerfile: ./Dockerfile.prd
-          repo: dishare-rails
-          tag: "${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
       
       # マイグレーションを実行
       - db-migrate-on-task-run:
           requires:
-            - aws-ecr/build-and-push-image
-          filters:
-            branches:
-              only: master
+            - build-image-and-push
+          # filters:
+          #   branches:
+          #     only: master
 
-      - aws-ecs/deploy-service-update:
+      - service-update:
           requires:
             - db-migrate-on-task-run
-          family: 'neptune-task' # ECSのタスク定義名
-          cluster-name: '${ECS_ARN}' #ECSのクラスターのARN
-          service-name: 'hello-service-3' #サービス名
-          container-image-name-updates: "container=rails-v15,tag=${CIRCLE_SHA1}"
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
 
       
 
