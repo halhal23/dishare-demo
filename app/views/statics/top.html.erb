@@ -5,20 +5,23 @@
       <p><span>"美味しい"</span>をシェアしましょう！</p>
       <form>
         <input type="text" v-model="keyword" @click="inputKeyword" placeholder="例: お肉 サラダ">
-        <a href="#top-rests-wrapper" class="searchBtn" @click="searchRest">
+        <a href="#top-rests-wrapper" class="searchBtn" @click.prevent="searchRest">
           <i class="fas fa-search"></i>
         </a>
         <div :class="{details: true, hidden: isHidden}">
-          <a href="#top-rests-wrapper" class="btn btn-success" @click="searchNearRest">近くのお店を探す</a>
-          <a href="#top-rests-wrapper" class="btn btn-primary" @click="searchRest">人気のお店を探す</a>
+          <a href="#top-rests-wrapper" class="btn btn-success" @click.prevnet="searchNearRest">近くのお店を探す</a>
+          <a href="#top-rests-wrapper" class="btn btn-primary" @click.prevent="searchRest">人気のお店を探す</a>
         </div>
       </form>
       <p>キーワードを入力して、店舗を検索してみましょう</p>
+      <button class="btn btn-primary" @click="noAxios">no axios</button>
+      <button class="btn btn-warning" @click="yesAxios">YES axios</button>
+      <p>{{ debug }}</p>
     </div>
   </div>
 
   <div class="top-rests-wrapper" id="top-rests-wrapper">
-    <div class="card"  v-for="rest in rests" :key="rest.name">
+    <div class="card"  v-for="rest in rests" :key="rest.name" v-if="!isError">
       <div class="imgBx">
         <img :src="rest.image_url.shop_image1" alt="" v-if="rest.image_url.shop_image1">
         <img :src="rest.image_url.shop_image2" alt="" v-else-if="rest.image_url.shop_image2">

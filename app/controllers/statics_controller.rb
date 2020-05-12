@@ -16,9 +16,13 @@ class StaticsController < ApplicationController
   def login
   end
 
+  def yesaxios
+    render json: { msg: 'yes yes axios' }
+  end
+
   def axios
     begin
-      # api_key = ''
+      api_key = ''
       api_key = ENV['GNAVI_API_KEY']
       url = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid='
       url << api_key  

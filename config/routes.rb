@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
 
   root 'statics#top'
+  get 'yesaxios', to: 'statics#yesaxios'
   get 'error', to: 'statics#error'
   get 'axios', to: 'statics#axios'
   get 'modal', to: 'statics#modal'

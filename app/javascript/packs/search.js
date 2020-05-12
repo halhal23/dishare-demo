@@ -25,17 +25,32 @@ document.addEventListener('DOMContentLoaded', () => {
       keyword: '',
       currentRest: {},
       rests: [],
-      geoPosition: {}
+      geoPosition: {},
+      debug: 'デバッグです',
+      isError: false
     },
     components: { 'google-map' : GooGleMap },
     methods: {
       inputKeyword: function(){
         this.isHidden = !this.isHidden;
       },
+      noAxios: function(){
+        alert('no axios');
+      },
+      yesAxios: function(){
+        axios.get('https://dishare.work/yesaxios'
+        ).then((res)=>{
+          alert(res.data.msg);
+          console.log(res);
+        }).catch((err)=>{
+          alert(err);
+          console.log(err);
+        })
+      },
       searchRest: function(){
-        event.preventDefault = false;
+        // event.preventDefault = false;
         console.log('search start');
-        axios.get('http://localhost/axios', {
+        axios.get('https://dishare.work/axios', {
           params: {
             keyword: this.keyword
           }
@@ -43,9 +58,23 @@ document.addEventListener('DOMContentLoaded', () => {
           this.rests = res.data;
           console.log('rests getted');
           console.log(res);
+          // 検索結果がnullだった場合の処理
+          if (res.data == null) {
+            // nullの場合（失敗のケース）
+            this.debug = 'NULLが返されてしまいました。'
+          } else if (res.data == 'error') {
+            this.isError = true;
+            console.log(res.data);
+            console.log('ohh error');
+            this.debug = res.data;
+          } else {
+            // 成功の場合
+            this.debug = '成功しました。'
+          }
         }).catch((err)=>{
           console.log(err);
           console.log('ohh error');
+          
         })
         console.log('finish');
       },
@@ -54,9 +83,9 @@ document.addEventListener('DOMContentLoaded', () => {
         this.currentRest = rest;
       },
       searchNearRest: function(){
-        event.preventDefault = false;
+        // event.preventDefault = false;
         console.log('search near start');
-        axios.get('http://localhost/axios', {
+        axios.get('https://dishare.work/axios', {
           params: {
             keyword: this.keyword,
             latitude: this.geoPosition.lat,
