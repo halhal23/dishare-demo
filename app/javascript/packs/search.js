@@ -26,26 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
       currentRest: {},
       rests: [],
       geoPosition: {},
-      debug: 'デバッグです',
-      isError: false
     },
     components: { 'google-map' : GooGleMap },
     methods: {
       inputKeyword: function(){
         this.isHidden = !this.isHidden;
-      },
-      noAxios: function(){
-        alert('no axios');
-      },
-      yesAxios: function(){
-        axios.get('https://dishare.work/yesaxios'
-        ).then((res)=>{
-          alert(res.data.msg);
-          console.log(res);
-        }).catch((err)=>{
-          alert(err);
-          console.log(err);
-        })
       },
       searchRest: function(){
         // event.preventDefault = false;
